@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FlightModel } from '../../models/flight.model';
-import { FlightService } from '../../services/flight.service';
+import { MovieModel } from '../../models/movie.model';
+import { MovieService } from '../../services/movie.service';
 import { NgIf } from '@angular/common';
 import { UtilsService } from '../../services/utils.service';
 import { LoadingComponent } from "../loading/loading.component";
@@ -18,18 +18,20 @@ import { SafePipe } from "../safe.pipe";
 })
 export class DetailsComponent {
 
-  public flight: FlightModel | null = null
+  public movie: MovieModel | null = null
 
   public constructor(private route: ActivatedRoute, public utils: UtilsService) {
     route.params.subscribe(params => {
-      FlightService.getFlightById(params['id'])
+      MovieService.getMovieById(params['id'])
         .then(rsp => {
-          this.flight = rsp.data
+          this.movie = rsp.data
         })
     })
   }
 
   public generateMapLink() {
-    return `https://www.google.com/maps?output=embed&q=${this.flight?.destination}`
+    // For cinema locations, we want to show the theater location on the map
+    return `https://www.google.com/maps?output=embed&q=cinema+${this.movie?.title}`
   }
 }
+

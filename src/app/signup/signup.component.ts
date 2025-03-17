@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
-import { FlightService } from '../../services/flight.service';
+import { MovieService } from '../../services/movie.service';
 import { MatSelectModule } from '@angular/material/select';
 import { NgFor } from '@angular/common';
 import { UserService } from '../../services/user.service';
@@ -18,7 +18,7 @@ import { UserService } from '../../services/user.service';
 })
 export class SignupComponent {
 
-  public destinationList: string[] = []
+  public genreList: string[] = ['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Animation', 'Thriller', 'Documentary', 'Romance']
   public email = ''
   public password = ''
   public repeatPassword = ''
@@ -26,11 +26,12 @@ export class SignupComponent {
   public lastName = ''
   public phone = ''
   public address = ''
-  public destination = ''
+  public genre = ''
 
   public constructor(private router: Router) {
-    FlightService.getDestinations()
-      .then(rsp => this.destinationList = rsp.data)
+    // For future implementation:
+    // MovieService.getGenres()
+    //   .then(rsp => this.genreList = rsp.data)
   }
 
   public doSignup() {
@@ -51,10 +52,11 @@ export class SignupComponent {
       lastName: this.lastName,
       phone: this.phone,
       address: this.address,
-      favouriteDestination: this.destination,
+      favouriteGenre: this.genre,
       orders: []
     })
 
     result ? this.router.navigate(['/login']) : alert('Email is already taken')
   }
 }
+

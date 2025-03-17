@@ -1,36 +1,37 @@
-import { AirlineModel } from "../models/airline.model";
+// theater.service.ts (u src/services/ direktorijumu)
+import { TheaterModel } from "../models/theater.model";
 
-export class AirlineService {
-    static getAirlines(): AirlineModel[] {
+export class TheaterService {
+    static getTheaters(): TheaterModel[] {
         return [
             {
                 id: 1,
                 name: 'Cineplexx',
-                countryOfOrigin: 'Serbia',
+                location: 'Serbia',
                 website: 'https://www.cineplexx.rs/'
             },
             {
                 id: 2,
                 name: 'Film Casino',
-                countryOfOrigin: 'Austria',
+                location: 'Austria',
                 website: 'https://www.filmcasino.at/'
             },
             {
                 id: 3,
                 name: 'Fox Theatre',
-                countryOfOrigin: 'USA',
+                location: 'USA',
                 website: 'https://www.foxtheatre.ca/'
             },
             {
                 id: 4,
                 name: 'Village Cinemas',
-                countryOfOrigin: 'Greece',
+                location: 'Greece',
                 website: 'https://www.villagecinemas.gr/en/'
             }
         ]
     }
 
-    static getAirlineById(id: number) {
-        return this.getAirlines().find(airline=>airline.id === id)
+    static getTheaterById(id: number) {
+        return this.getTheaters().find(theater => theater.id === id)
     }
 }

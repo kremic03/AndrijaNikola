@@ -12,7 +12,7 @@ export class UserService {
                     lastName: 'User',
                     phone: '+3816123456789',
                     address: 'Mokroluska 14, Vozdovac',
-                    favouriteDestination: 'Banja Luka',
+                    favouriteGenre: 'Action',
                     password: 'user123',
                     orders: []
                 }
@@ -45,7 +45,7 @@ export class UserService {
                 u.lastName = model.lastName
                 u.address = model.address
                 u.phone = model.phone
-                u.favouriteDestination = model.favouriteDestination
+                u.favouriteGenre = model.favouriteGenre
             }
         }
 
@@ -89,7 +89,7 @@ export class UserService {
         return false
     }
 
-    static changeOrderStatus(state: 'ordered' | 'paid' | 'canceled', id: number) {
+    static changeOrderStatus(state: 'reserved' | 'paid' | 'canceled', id: number) {
         const active = this.getActiveUser()
         if (active) {
             const arr = this.retrieveUsers()
@@ -128,7 +128,6 @@ export class UserService {
     }
 
     static changePassword(newPassword: string): boolean {
-
         const arr = this.retrieveUsers()
         for (let user of arr) {
             if (user.email == localStorage.getItem('active')) {
@@ -141,3 +140,4 @@ export class UserService {
         return false
     }
 }
+

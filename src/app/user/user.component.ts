@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { FlightService } from '../../services/flight.service';
+import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-user',
@@ -34,10 +34,10 @@ import { FlightService } from '../../services/flight.service';
   styleUrl: './user.component.css'
 })
 export class UserComponent {
-  public displayedColumns: string[] = ['id', 'destination', 'flightNumber', 'airline', 'count', 'price', 'total', 'status', 'actions'];
+  public displayedColumns: string[] = ['id', 'title', 'movieNumber', 'theater', 'count', 'price', 'total', 'status', 'actions'];
   public user: UserModel | null = null
   public userCopy: UserModel | null = null
-  public destinationList: string[] = []
+  public genreList: string[] = ['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Animation', 'Thriller', 'Documentary', 'Romance']
 
   public oldPasswordValue = ''
   public newPasswordValue = ''
@@ -45,16 +45,17 @@ export class UserComponent {
 
   constructor(private router: Router) {
     if (!UserService.getActiveUser()) {
-      // Korisnik aplikacije nije ulogovan
-      // Vrati korisnika na homepage
+      // User is not logged in
+      // Return user to homepage
       router.navigate(['/home'])
       return
     }
 
     this.user = UserService.getActiveUser()
     this.userCopy = UserService.getActiveUser()
-    FlightService.getDestinations()
-      .then(rsp => this.destinationList = rsp.data)
+    
+    // Get genre list from API (could use MovieService.getGenres() if we had that endpoint)
+    // For now using a hardcoded list above
   }
 
   public doChangePassword() {
@@ -64,12 +65,12 @@ export class UserComponent {
     }
 
     if (this.newPasswordValue !== this.repeatPasswordValue) {
-      alert('Password dont match')
+      alert('Passwords dont match')
       return
     }
 
     if (this.oldPasswordValue !== this.user?.password) {
-      alert('Password dont match')
+      alert('Current password is incorrect')
       return
     }
 
@@ -91,7 +92,7 @@ export class UserComponent {
 
     UserService.updateUser(this.userCopy)
     this.user = UserService.getActiveUser()
-    alert('User was updated')
+    alert('User profile was updated')
   }
 
   public doPay(order: OrderModel) {

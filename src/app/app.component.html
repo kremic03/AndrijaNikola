@@ -7,8 +7,8 @@
     <a routerLink="/search" mat-button>
         <i class="fa-solid fa-search"></i> Search
     </a>
-    <a routerLink="/airlines" mat-button>
-        <i class="fa-solid fa-masks-theater"></i> Theatres
+    <a routerLink="/theaters" mat-button>
+        <i class="fa-solid fa-masks-theater"></i> Theaters
     </a>
     <a routerLink="/login" mat-button *ngIf="!service.getActiveUser()">
         <i class="fa-solid fa-right-to-bracket"></i> Login
@@ -25,3 +25,4 @@
 </mat-toolbar>
 
 <router-outlet />
+

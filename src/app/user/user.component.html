@@ -5,8 +5,8 @@
             <img mat-card-avatar class="example-header-image" [src]="['https://ui-avatars.com/api/?name='+user.email]">
             <mat-card-title>{{user.firstName}} {{user.lastName}}</mat-card-title>
             <mat-card-subtitle>
-                <p class="no-border">Total orders: {{user.orders.length}}</p>
-                <p class="no-border">Destination: {{user.favouriteDestination}}</p>
+                <p class="no-border">Total reservations: {{user.orders.length}}</p>
+                <p class="no-border">Favorite genre: {{user.favouriteGenre}}</p>
             </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="user-card-content">
@@ -30,7 +30,7 @@
                         <input matInput type="password" [(ngModel)]="repeatPasswordValue" />
                     </mat-form-field>
                     <button mat-button (click)="doChangePassword()">
-                        <i class="fa-solid fa-paper-plane"></i> Sumbit
+                        <i class="fa-solid fa-paper-plane"></i> Submit
                     </button>
                 </mat-expansion-panel>
                 <mat-expansion-panel *ngIf="userCopy">
@@ -60,10 +60,10 @@
                         <input matInput type="text" [(ngModel)]="userCopy.address" />
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                        <mat-label>Select Favourite Destination</mat-label>
-                        <mat-select [(ngModel)]="userCopy.favouriteDestination">
-                            <mat-option *ngFor="let dest of destinationList" [value]="dest">
-                                {{dest}}
+                        <mat-label>Select Favorite Genre</mat-label>
+                        <mat-select [(ngModel)]="userCopy.favouriteGenre">
+                            <mat-option *ngFor="let genre of genreList" [value]="genre">
+                                {{genre}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -77,49 +77,49 @@
 
     <mat-card appearance="outlined" *ngIf="user.orders.length == 0" class="no-order">
         <mat-card-content>
-            <h1>You have no orders yet!</h1>
-            <p>To place an order visit the <a routerLink="/searh" class="cyan">search page</a></p>
+            <h1>You have no movie reservations yet!</h1>
+            <p>To book tickets, visit the <a routerLink="/search" class="cyan">search page</a></p>
         </mat-card-content>
     </mat-card>
 
     <div *ngIf="user.orders.length > 0">
         <div *ngIf="user.orders">
-            <h1>Order List</h1>
+            <h1>Reservation List</h1>
             <table mat-table [dataSource]="user.orders" class="mat-elevation-z8">
 
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef>
                         <i class="fa-solid fa-hashtag"></i> ID
                     </th>
-                    <td mat-cell *matCellDef="let element"> {{element.flightId}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.movieId}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="destination">
+                <ng-container matColumnDef="title">
                     <th mat-header-cell *matHeaderCellDef>
-                        <i class="fa-solid fa-map-location-dot"></i> Destination
+                        <i class="fa-solid fa-film"></i> Movie
                     </th>
-                    <td mat-cell *matCellDef="let element"> {{element.destination}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="flightNumber">
+                <ng-container matColumnDef="movieNumber">
                     <th mat-header-cell *matHeaderCellDef>
-                        <i class="fa-solid fa-plane-circle-exclamation"></i> Flight Number
+                        <i class="fa-solid fa-clapperboard"></i> Movie Code
                     </th>
-                    <td mat-cell *matCellDef="let element"> {{element.flightNumber}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.movieNumber}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="airline">
+                <ng-container matColumnDef="theater">
                     <th mat-header-cell *matHeaderCellDef>
-                        <i class="fa-solid fa-plane"></i> Airline
+                        <i class="fa-solid fa-building"></i> Theater
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        {{element.airline.name}}
+                        {{element.theater.name}}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="count">
                     <th mat-header-cell *matHeaderCellDef>
-                        <i class="fa-solid fa-arrow-up-wide-short"></i> Count
+                        <i class="fa-solid fa-ticket"></i> Tickets
                     </th>
                     <td mat-cell *matCellDef="let element">
                         {{element.count}}
@@ -158,25 +158,8 @@
                         <div *ngIf="element.status == 'paid' && element.rating == false">
                             DISLIKED
                         </div>
-                        <div *ngIf="element.status == 'ordered' || element.status == 'canceled'">
+                        <div *ngIf="element.status == 'reserved' || element.status == 'canceled'">
                             {{element.status.toUpperCase()}}
-                        </div>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="rating">
-                    <th mat-header-cell *matHeaderCellDef>
-                        <i class="fa-solid fa-star"></i> Rating
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element.rating == null">
-                            NO RATING
-                        </div>
-                        <div *ngIf="element.rating == true">
-                            LIKED
-                        </div>
-                        <div *ngIf="element.rating == false">
-                            DISLIKED
                         </div>
                     </td>
                 </ng-container>
@@ -186,10 +169,10 @@
                         <i class="fa-solid fa-location-arrow"></i> Actions
                     </th>
                     <td mat-cell *matCellDef="let element" class="actions">
-                        <a mat-button [routerLink]="['/details/', element.flightId]">
+                        <a mat-button [routerLink]="['/details/', element.movieId]">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i> Details
                         </a>
-                        <div *ngIf="element.status == 'ordered'">
+                        <div *ngIf="element.status == 'reserved'">
                             <button type="button" mat-button (click)="doPay(element)">
                                 <i class="fa-solid fa-cart-shopping"></i> Pay
                             </button>
@@ -214,3 +197,4 @@
         </div>
     </div>
 </div>
+
